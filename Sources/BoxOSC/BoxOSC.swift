@@ -1,7 +1,7 @@
 import Cocoa
 
 
-typealias OSCArgsType = Any
+public typealias OSCArgsType = Any
 
 extension Int: OSCArgsType{}
 extension String: OSCArgsType{}
