@@ -8,16 +8,9 @@ extension String: OSCArgsType{}
 extension Double: OSCArgsType{}
 
 
-struct OSC {
+public struct OSC {
     private var _address:String
     private var _data:[OSCArgsType?]
-    
-    
-    
-    
-    
-    
-    
     
     init(address:String, data:[OSCArgsType] = []) {
         self._address = address
