@@ -12,7 +12,7 @@ public struct OSC {
     private var _address:String
     private var _data:[OSCArgsType?]
     
-    init(address:String, data:[OSCArgsType] = []) {
+    public init(address:String, data:[OSCArgsType] = []) {
         self._address = address
         self._data = data
     }
