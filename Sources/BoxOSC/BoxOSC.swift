@@ -18,6 +18,19 @@ public struct OSC {
     }
     
     
+    public var address:String {
+        get {
+            if !self._address.starts(with: "/") {
+                return "/\(self._address)"
+            }
+            return self._address
+        }
+        
+        set {
+            self._address = newValue
+        }
+    }
+    
     // Data return methods
     
     public func asBytes() -> [UInt8] {
