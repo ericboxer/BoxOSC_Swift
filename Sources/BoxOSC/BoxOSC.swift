@@ -184,9 +184,8 @@ fileprivate func parser(str:String)-> OSCAssembly {
     
     
 //    guard case holder.address = String(splitString[0]) else
-    
+    print(splitString.count)
     if splitString.count <= 0 {
-//        holder.address = String(splitString[0])
      return OSCAssembly(address: "/", arguments: [])
     }
     
