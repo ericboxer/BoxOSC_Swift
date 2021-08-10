@@ -181,26 +181,27 @@ fileprivate func parser(str:String)-> OSCAssembly {
     let splitString = str.split(separator: " ", maxSplits: 1)
     
     // we know OSC has an unsplitable address
-    
-    
-//    guard case holder.address = String(splitString[0]) else
-
+    print(splitString.count)
     if splitString.count < 1 {
      return OSCAssembly(address: "/", arguments: [])
+    } else {
+        holder.address = String(splitString[0])
     }
     
-    if splitString.count > 1 {
+    
+    if splitString.count >= 1 {
         var tempString = ""
         var isInString = false
         
         var count = 0
+        if splitString.count > 1 {
         for letter in splitString[1]{
             count += 1
             
             // Ending a String
             if letter == "\"" && isInString {
                 isInString = false
-                argsHolder.append(String(tempString))
+                argsHolder.append(addQuotesToLongString(str:tempString))
                 tempString = ""
                 continue
             }
@@ -226,16 +227,19 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     // This means weve hit an end!
                     
                     // is it a number?
-                    if tempString.isInt && tempString.components(separatedBy: ".").count <= 2   {
+                    print("Isint: \(tempString.isNumber)")
+                    if tempString.isNumber {
+
+                        
                         if tempString.contains(".") {
                                 argsHolder.append(Double(tempString)!)
                         } else {
                             argsHolder.append(Int(tempString)!)
                         }
+//                    }
                         // Its probably a string.
                     } else {
-
-                        argsHolder.append(String(tempString))
+                        argsHolder.append(addQuotesToLongString(str: tempString))
                     }
                     tempString = ""
                 } else {
@@ -243,7 +247,19 @@ fileprivate func parser(str:String)-> OSCAssembly {
                 }
             }
         }
+        
         holder.arguments = argsHolder
     }
+    }
     return holder
+}
+
+fileprivate func addQuotesToLongString(str:String)->String {
+    var tempString = str
+    
+    if tempString.contains(" ") {
+        tempString = "\"\(tempString)\""
+    }
+    
+    return tempString
 }
