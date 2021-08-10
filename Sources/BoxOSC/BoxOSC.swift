@@ -17,12 +17,10 @@ public struct OSC {
         self._data = data
     }
     
-    public init(from:String) {
+    public init(from:String){
         self._address = ""
         self._data = []
-        print("string")
     }
-    
     
     public var address:String {
         get {
