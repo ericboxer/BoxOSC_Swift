@@ -9,6 +9,6 @@ import Foundation
 
 extension String {
     var isInt: Bool {
-        return !isEmpty && (rangeOfCharacter(from: .decimalDigits) != nil)
+        return !isEmpty && (rangeOfCharacter(from: .decimalDigits.inverted) == nil)
     }
 }
