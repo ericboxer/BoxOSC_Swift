@@ -8,6 +8,32 @@ extension String: OSCArgsType{}
 extension Double: OSCArgsType{}
 
 
+private enum ArgTypes {
+    case STRING
+    case INT
+    case FLOAT
+}
+
+
+private struct ArgType:CustomStringConvertible {
+    var type:ArgTypes
+    var value:Any
+    
+    var description:String {
+        return "type:\(type), value:\(value)"
+        
+    }
+}
+
+private struct OSCAssembly:CustomStringConvertible {
+    var address:String
+    var arguments:[ArgType]
+    
+    var description: String {
+        return "address: \(address), arguments: \(arguments)"
+    }
+}
+
 public struct OSC {
     private var _address:String
     private var _data:[OSCArgsType?]
@@ -18,8 +44,9 @@ public struct OSC {
     }
     
     public init(from:String){
-        self._address = ""
-        self._data = []
+        let tempHolder:OSCAssembly = parser(str: from)
+        self._address = tempHolder.address
+        self._data = tempHolder.arguments
     }
     
     public var address:String {
@@ -83,7 +110,6 @@ public struct OSC {
         for _ in 1...padCount {
             buf.append(0)
         }
-        
         return buf
     }
     
@@ -140,4 +166,77 @@ public struct OSC {
         return oscOutMessage
         
     }
+    
+    
+    
+    // OSC From String Helpers
+    
+    fileprivate func parser(str:String)-> OSCAssembly {
+        
+        var holder:OSCAssembly = OSCAssembly(address: "", arguments: [])
+        var argsHolder:[ArgType] = []
+        let splitString = str.split(separator: " ", maxSplits: 1)
+        
+        // we know OSC has an unsplitable address
+        holder.address = String(splitString[0])
+        
+        
+        if splitString.count > 1 {
+            var tempString = ""
+            var isInString = false
+            
+            var count = 0
+            for letter in splitString[1]{
+                count += 1
+                
+                // Ending a String
+                if letter == "\"" && isInString {
+                    isInString = false
+                    argsHolder.append(ArgType(type: .STRING, value: tempString))
+                    tempString = ""
+                    continue
+                }
+                
+                // Starting a String
+                if letter == "\"" && !isInString {
+                    isInString = true
+                    continue
+                }
+                
+                // Add a letter to a string
+                if letter != "\"" && isInString {
+                    tempString.append(letter)
+                    continue
+                }
+                
+                if letter != " " && !isInString {
+                    tempString.append(letter)
+                }
+                
+                if (letter == " " && !isInString) || ((count == splitString[1].count) && tempString.count > 0 ){
+                    if tempString != "" {
+                        // This means weve hit an end!
+                        
+                        // is it a number?
+                        if tempString.isInt {
+                            if tempString.contains(".") {
+                                argsHolder.append(ArgType(type: .FLOAT, value: Float(tempString)!))
+                            } else {
+                                argsHolder.append(ArgType(type: .INT, value: Int(tempString)!))
+                            }
+                            // Its probably a string.
+                        } else {
+                            argsHolder.append(ArgType(type: .STRING, value: String(tempString)))
+                        }
+                        tempString = ""
+                    } else {
+                        continue
+                    }
+                }
+            }
+            holder.arguments = argsHolder
+        }
+        return holder
+    }
+
 }
