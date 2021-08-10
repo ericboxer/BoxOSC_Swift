@@ -27,7 +27,8 @@ private struct ArgType:CustomStringConvertible {
 
 private struct OSCAssembly:CustomStringConvertible {
     var address:String
-    var arguments:[ArgType]
+//    var arguments:[ArgType]
+    var arguments:[OSCArgsType]
     
     var description: String {
         return "address: \(address), arguments: \(arguments)"
@@ -141,7 +142,6 @@ public struct OSC {
                     case is Int:
                         tempStructure += "i"
                         tempBytes += self.intTo32Bytes(number: arg as! Int)
-                        
                     // We can probably just treat everything else at this point
                     default:
                         tempStructure += "s"
@@ -173,7 +173,8 @@ public struct OSC {
 fileprivate func parser(str:String)-> OSCAssembly {
     
     var holder:OSCAssembly = OSCAssembly(address: "", arguments: [])
-    var argsHolder:[ArgType] = []
+    var argsHolder:[OSCArgsType] = []
+//    var argsHolder:[ArgType] = []
     let splitString = str.split(separator: " ", maxSplits: 1)
     
     // we know OSC has an unsplitable address
@@ -219,13 +220,17 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     // is it a number?
                     if tempString.isInt {
                         if tempString.contains(".") {
-                            argsHolder.append(ArgType(type: .FLOAT, value: Float(tempString)!))
+//                            argsHolder.append(ArgType(type: .FLOAT, value: Float(tempString)!))
+                            argsHolder.append(Float(tempString))
+                            
                         } else {
-                            argsHolder.append(ArgType(type: .INT, value: Int(tempString)!))
+//                            argsHolder.append(ArgType(type: .INT, value: Int(tempString)!))
+                            argsHolder.append(Int(tempString))
                         }
                         // Its probably a string.
                     } else {
-                        argsHolder.append(ArgType(type: .STRING, value: String(tempString)))
+//                        argsHolder.append(ArgType(type: .STRING, value: String(tempString)))
+                        argsHolder.append(String(tempString))
                     }
                     tempString = ""
                 } else {
