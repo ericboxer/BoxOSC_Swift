@@ -195,7 +195,6 @@ fileprivate func parser(str:String)-> OSCAssembly {
             // Ending a String
             if letter == "\"" && isInString {
                 isInString = false
-//                argsHolder.append(ArgType(type: .STRING, value: tempString))
                 argsHolder.append(String(tempString))
                 tempString = ""
                 continue
@@ -224,16 +223,14 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     // is it a number?
                     if tempString.isInt {
                         if tempString.contains(".") {
-//                            argsHolder.append(ArgType(type: .FLOAT, value: Float(tempString)!))
-                            argsHolder.append(Float(tempString)!)
+                            argsHolder.append(Double(tempString)!)
                             
                         } else {
-//                            argsHolder.append(ArgType(type: .INT, value: Int(tempString)!))
                             argsHolder.append(Int(tempString)!)
                         }
                         // Its probably a string.
                     } else {
-//                        argsHolder.append(ArgType(type: .STRING, value: String(tempString)))
+
                         argsHolder.append(String(tempString))
                     }
                     tempString = ""
