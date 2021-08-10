@@ -46,6 +46,9 @@ public struct OSC {
     
     public init(from:String){
         let tempHolder:OSCAssembly = parser(str: from)
+        
+        print(tempHolder.arguments)
+        
         self._address = tempHolder.address
         self._data = tempHolder.arguments
     }
@@ -221,11 +224,11 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     if tempString.isInt {
                         if tempString.contains(".") {
 //                            argsHolder.append(ArgType(type: .FLOAT, value: Float(tempString)!))
-                            argsHolder.append(Float(tempString))
+                            argsHolder.append(Float(tempString)!)
                             
                         } else {
 //                            argsHolder.append(ArgType(type: .INT, value: Int(tempString)!))
-                            argsHolder.append(Int(tempString))
+                            argsHolder.append(Int(tempString)!)
                         }
                         // Its probably a string.
                     } else {
