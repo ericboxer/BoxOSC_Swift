@@ -183,7 +183,9 @@ fileprivate func parser(str:String)-> OSCAssembly {
     // we know OSC has an unsplitable address
     
     
-    guard case holder.address = String(splitString[0]) else  {
+//    guard case holder.address = String(splitString[0]) else
+    
+    if splitString.count <= 0 {
 //        holder.address = String(splitString[0])
      return OSCAssembly(address: "/", arguments: [])
     }
