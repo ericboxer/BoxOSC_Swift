@@ -221,15 +221,9 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     // This means weve hit an end!
                     
                     // is it a number?
-                    if tempString.isInt {
+                    if tempString.isInt && tempString.components(separatedBy: ".").count <= 2   {
                         if tempString.contains(".") {
-                            if tempString.components(separatedBy: ".").count == 2 {
                                 argsHolder.append(Double(tempString)!)
-                                
-                            } else {
-                                continue
-                            }
-                            
                         } else {
                             argsHolder.append(Int(tempString)!)
                         }
