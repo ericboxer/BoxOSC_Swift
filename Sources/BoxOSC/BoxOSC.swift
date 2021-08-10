@@ -222,7 +222,7 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     
                     // is it a number?
                     if tempString.isInt {
-                        if tempString.contains(".") {
+                        if tempString.contains(".") && tempString.components(separatedBy: ".").count == 2 {
                             argsHolder.append(Double(tempString)!)
                             
                         } else {
