@@ -181,8 +181,12 @@ fileprivate func parser(str:String)-> OSCAssembly {
     let splitString = str.split(separator: " ", maxSplits: 1)
     
     // we know OSC has an unsplitable address
-    holder.address = String(splitString[0])
     
+    
+    guard case holder.address = String(splitString[0]) else  {
+//        holder.address = String(splitString[0])
+     return OSCAssembly(address: "/", arguments: [])
+    }
     
     if splitString.count > 1 {
         var tempString = ""
