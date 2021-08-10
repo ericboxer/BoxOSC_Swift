@@ -195,7 +195,8 @@ fileprivate func parser(str:String)-> OSCAssembly {
             // Ending a String
             if letter == "\"" && isInString {
                 isInString = false
-                argsHolder.append(ArgType(type: .STRING, value: tempString))
+//                argsHolder.append(ArgType(type: .STRING, value: tempString))
+                argsHolder.append(String(tempString))
                 tempString = ""
                 continue
             }
