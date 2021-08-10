@@ -12,9 +12,15 @@ public struct OSC {
     private var _address:String
     private var _data:[OSCArgsType?]
     
-    public init(address:String, data:[OSCArgsType] = []) {
+    public init(address:String, arguments data:[OSCArgsType] = []) {
         self._address = address
         self._data = data
+    }
+    
+    public init(from:String) {
+        self._address = ""
+        self._data = []
+        print("string")
     }
     
     
@@ -66,7 +72,6 @@ public struct OSC {
             for arg in self._data {
                 messageString+=" \(String(describing: arg!))"
             }}
-        
         return messageString
     }
     
@@ -93,7 +98,6 @@ public struct OSC {
     private func intTo32Bytes(number:Int) -> [UInt8] {
         var val = UInt32(number).byteSwapped
         return [UInt8](NSData(bytes: &val, length: 4))
-        
     }
     
     private func processArgs() -> [UInt8] {
@@ -119,7 +123,6 @@ public struct OSC {
                         tempStructure += "s"
                         tempBytes += self.oscPad(arg as! String)
                     }
-                    
                 }
             }
         }
@@ -140,11 +143,3 @@ public struct OSC {
         
     }
 }
-
-//
-//var a = OSC(address: "/this/is/ass", data: [-54.17, 655350, "Pussy willows"])
-//print(a.asBytes)
-//
-//
-//
-//
