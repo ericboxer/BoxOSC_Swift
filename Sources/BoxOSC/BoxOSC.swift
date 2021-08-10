@@ -138,7 +138,7 @@ public struct OSC {
                 
                 if let rg = arg {
                     switch rg {
-                    case is Double:
+                    case is Double, is Float:
                         // Things come in as Doubles, but we'll actually list it as a float
                         tempStructure += "f"
                         tempBytes += self.doubleToFloat32Bytes(number: arg as! Double)
@@ -223,7 +223,7 @@ fileprivate func parser(str:String)-> OSCAssembly {
                     // is it a number?
                     if tempString.isInt {
                         if tempString.contains(".") {
-                            argsHolder.append(Double(tempString)!)
+                            argsHolder.append(Float(tempString)!)
                             
                         } else {
                             argsHolder.append(Int(tempString)!)
