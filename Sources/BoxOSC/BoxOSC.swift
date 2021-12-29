@@ -108,13 +108,13 @@ public struct OSC {
     // Helper methods
     
     private func oscPad(_ str:String) -> [UInt8]{
-        var buf = Array(str.utf8)
-        let bufRemainder = buf.count % 4
-        let padCount = (bufRemainder > 0 ? 4-bufRemainder : 4)
+        var buffer = Array(str.utf8)
+        let bufferRemainder = buffer.count % 4
+        let padCount = (bufferRemainder > 0 ? 4-bufferRemainder : 4)
         for _ in 1...padCount {
-            buf.append(0)
+            buffer.append(0)
         }
-        return buf
+        return buffer
     }
     
     
@@ -134,21 +134,23 @@ public struct OSC {
         
         if self._data.count != 0 {
             
-            for arg in self._data {
+            for argument in self._data {
                 
-                if let rg = arg {
-                    switch rg {
+                
+                // Lets determine what the Type is of the argument
+                if let arg = argument {
+                    switch arg {
                     case is Double, is Float:
-                        // Things come in as Doubles, but we'll actually list it as a float
+                        // Things come in as Doubles, but we'll actually interprit it as a float
                         tempStructure += "f"
-                        tempBytes += self.doubleToFloat32Bytes(number: arg as! Double)
+                        tempBytes += self.doubleToFloat32Bytes(number: argument as! Double)
                     case is Int:
                         tempStructure += "i"
-                        tempBytes += self.intTo32Bytes(number: arg as! Int)
+                        tempBytes += self.intTo32Bytes(number: argument as! Int)
                     // We can probably just treat everything else at this point
                     default:
                         tempStructure += "s"
-                        tempBytes += self.oscPad(arg as! String)
+                        tempBytes += self.oscPad(argument as! String)
                     }
                 }
             }
